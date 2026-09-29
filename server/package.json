@@ -1,0 +1,23 @@
+{
+  "name": "folio-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "epub-gen-memory": "^1.1.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "marked": "^18.0.14",
+    "mongoose": "^8.5.1",
+    "pdfkit": "^0.20.2",
+    "stripe": "^22.6.2"
+  }
+}

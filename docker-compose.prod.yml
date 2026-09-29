@@ -1,0 +1,33 @@
+# Reference production compose file. Fill in the environment values, then run:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes: [mongo-data:/data/db]
+
+  api:
+    build: ./server
+    restart: unless-stopped
+    depends_on: [mongo]
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/folio
+      CLIENT_URL: ${CLIENT_URL}
+      ALLOWED_ORIGINS: ${CLIENT_URL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CURRENCY: ${CURRENCY:-usd}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_SECRET: ${PAYPAL_SECRET}
+      PAYPAL_ENV: ${PAYPAL_ENV:-live}
+    ports: ["4000:4000"]
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    depends_on: [api]
+    environment:
+      NEXT_PUBLIC_API_URL: ${API_URL}
+      API_URL: ${API_URL}
+    ports: ["3000:3000"]

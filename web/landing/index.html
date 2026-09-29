@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Folio – Write once. Publish your docs and sell your book.</title>
+<meta name="description" content="PWA that turns one Markdown workspace into a docs site and a book you sell directly, with zero marketplace fees.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Folio – Write once. Publish your docs and sell your book.">
+<meta property="og:description" content="One Markdown workspace that ships your product documentation as a fast site and packages the same content as a book you sell directly to readers.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Folio – Write once. Publish your docs and sell your book.">
+<meta name="twitter:description" content="One Markdown workspace that ships your product documentation as a fast site and packages the same content as a book you sell directly to readers.">
+<style>
+:root{--bg:#fafafc;--surface:#fff;--ink:#1a1c2e;--muted:#4a4f66;--line:#e2e4ee;--pri:#3949ab;--pri-d:#283593;--pri-t:#eceefb;--acc:#ffb300;--acc-d:#f5a800;--on-acc:#1a1c2e;--band:#283593;
+--sh1:0 1px 3px rgba(26,28,46,.12),0 1px 2px rgba(26,28,46,.08);--sh3:0 10px 24px rgba(26,28,46,.14),0 4px 8px rgba(26,28,46,.08);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11131f;--surface:#1a1d2e;--ink:#eef0fa;--muted:#b4b9d2;--line:#2c3048;--pri:#9fa8f5;--pri-d:#c5cbff;--pri-t:#232746;--band:#232a6b;--sh1:0 1px 3px rgba(0,0,0,.5);--sh3:0 10px 24px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--bg:#11131f;--surface:#1a1d2e;--ink:#eef0fa;--muted:#b4b9d2;--line:#2c3048;--pri:#9fa8f5;--pri-d:#c5cbff;--pri-t:#232746;--band:#232a6b;--sh1:0 1px 3px rgba(0,0,0,.5);--sh3:0 10px 24px rgba(0,0,0,.5)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{line-height:1.15;margin:0;letter-spacing:-.02em}
+p{margin:0}a{color:var(--pri)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+.h2{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;margin-bottom:12px}
+.lead{color:var(--muted);max-width:60ch;font-size:1.0625rem}
+.center{text-align:center}.center .lead{margin-inline:auto}
+:focus-visible{outline:3px solid var(--pri);outline-offset:3px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-p{background:var(--acc);color:var(--on-acc);box-shadow:var(--sh1)}.btn-p:hover{background:var(--acc-d);box-shadow:var(--sh3)}
+.btn-s{background:transparent;color:var(--pri);border-color:var(--pri)}.btn-s:hover{background:var(--pri-t)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:.9375rem}
+.lang-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;min-width:44px;padding:0 12px;border-radius:8px;font-weight:700;font-size:.875rem;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.lang-btn:hover{border-color:var(--pri);color:var(--pri)}
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.125rem;color:var(--ink);text-decoration:none}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--pri);display:grid;place-items:center;color:#fff;font:700 15px JetBrains Mono,monospace;font-style:normal}
+.links{display:none;gap:24px}.links a{color:var(--muted);text-decoration:none;font-weight:500}.links a:hover{color:var(--pri)}
+.nav-r{display:flex;align-items:center;gap:12px}
+@media(min-width:900px){.links{display:flex}}
+.hero{padding:56px 0 72px;background:radial-gradient(900px 400px at 80% -10%,var(--pri-t),transparent)}
+.hero-g{display:grid;gap:40px;align-items:center}
+@media(min-width:960px){.hero-g{grid-template-columns:1.05fr 1fr}}
+.eyebrow{display:inline-block;background:var(--pri-t);color:var(--pri-d);font-weight:600;font-size:.875rem;padding:6px 14px;border-radius:999px;margin-bottom:20px}
+.hero h1{font-size:clamp(2.25rem,6vw,3.75rem);font-weight:800;margin-bottom:20px}
+.hero .lead{margin-bottom:28px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.micro{margin-top:14px;font-size:.875rem;color:var(--muted)}
+.vis{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh3);overflow:hidden}
+.bar{display:flex;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line)}.bar span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.panes{display:grid;grid-template-columns:1fr 1fr;min-height:250px}
+.pane{padding:16px;font-size:.8125rem}.pane+.pane{border-left:1px solid var(--line);background:var(--pri-t)}
+pre{margin:0;font:400 .8125rem/1.7 JetBrains Mono,monospace;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
+.k{color:var(--pri)}
+.doc b{display:block;font-size:1rem;margin-bottom:6px}
+.chip{display:inline-block;margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:.75rem}
+.book{margin:0 16px 16px;display:flex;align-items:center;gap:14px;padding:12px;border:1px solid var(--line);border-radius:12px}
+.cover{width:44px;height:58px;border-radius:4px;background:var(--pri);flex:none;box-shadow:var(--sh1)}
+.book div:nth-child(2){flex:1;font-size:.875rem}.book small{color:var(--muted);display:block}
+.buy{background:var(--acc);color:var(--on-acc);font-weight:700;padding:6px 12px;border-radius:6px;font-size:.8125rem}
+.grid3{display:grid;gap:20px;margin-top:40px}
+@media(min-width:760px){.grid3{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px;box-shadow:var(--sh1)}
+.card h3{font-size:1.25rem;margin-bottom:10px}.card p{color:var(--muted)}
+.ic{width:44px;height:44px;border-radius:10px;background:var(--pri-t);color:var(--pri);display:grid;place-items:center;font-size:1.25rem;margin-bottom:16px}
+.steps{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:20px;counter-reset:s}
+@media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+.steps li{counter-increment:s;position:relative;padding:28px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--pri);color:#fff;font-weight:700;margin-bottom:14px}
+.steps h3{font-size:1.125rem;margin-bottom:8px}.steps p{color:var(--muted)}
+.steps a{display:inline-block;margin-top:12px;font-weight:600}
+.alt{background:var(--surface);border-block:1px solid var(--line)}
+.grid6{display:grid;gap:20px;margin-top:40px}
+@media(min-width:640px){.grid6{grid-template-columns:repeat(2,1fr)}}@media(min-width:960px){.grid6{grid-template-columns:repeat(3,1fr)}}
+.price{display:grid;gap:20px;margin-top:40px;max-width:820px;margin-inline:auto}
+@media(min-width:760px){.price{grid-template-columns:1fr 1fr}}
+.tier{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:32px;box-shadow:var(--sh1)}
+.tier.hl{border:2px solid var(--pri);box-shadow:var(--sh3)}
+.tier h3{font-size:1.25rem}.amt{font-size:2.25rem;font-weight:800;margin:10px 0 16px}.amt small{font-size:1rem;font-weight:500;color:var(--muted)}
+.tier ul{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:10px;color:var(--muted);flex:1}
+.tier li::before{content:"✓";color:var(--pri);font-weight:800;margin-right:10px}
+.faq{max-width:760px;margin:40px auto 0;display:grid;gap:12px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 20px}
+summary{cursor:pointer;font-weight:600;padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--pri)}
+details[open] summary::after{content:"−"}
+details p{color:var(--muted);padding-bottom:18px}
+.cta{background:var(--band);color:#fff;text-align:center;padding:80px 0}
+.cta h2{font-size:clamp(1.9rem,5vw,3rem);font-weight:800;margin-bottom:12px}
+.cta p{color:#dfe2ff;margin-bottom:28px}.cta .ctas{justify-content:center}
+.cta a.l{color:#fff;font-weight:600}
+footer{padding:32px 0;color:var(--muted);font-size:.9375rem}
+.foot{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px 20px}.foot a{color:var(--muted)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap nav">
+  <a class="logo" href="#top" aria-label="Folio home"><i>M↓</i>Folio</a>
+  <nav class="links" aria-label="Primary">
+   <a href="#features" data-i18n="navFeatures">Features</a>
+   <a href="#how" data-i18n="navHow">How it works</a>
+   <a href="#pricing" data-i18n="navPricing">Pricing</a>
+   <a href="#faq" data-i18n="navFaq">FAQ</a>
+  </nav>
+  <div class="nav-r">
+   <button class="lang-btn" id="langToggle" type="button" aria-label="Switch language">FR</button>
+   <a class="btn btn-p btn-sm" href="/app" data-i18n="navCta">Start Writing for Free</a>
+  </div>
+ </div>
+</header>
+<main id="top">
+<section class="hero">
+ <div class="wrap hero-g">
+  <div>
+   <span class="eyebrow" data-i18n="heroEyebrow">Installable PWA · Works offline · Yours to own</span>
+   <h1 data-i18n="heroH1">Write once. Publish your docs and sell your book.</h1>
+   <p class="lead" data-i18n="heroLead">One Markdown workspace that ships your product documentation as a fast, searchable site and packages the same content as a book you sell directly to readers. No formatting gymnastics, no marketplace taking a cut, and it works offline.</p>
+   <div class="ctas">
+    <a class="btn btn-p" href="/app" data-i18n="heroCtaPrimary">Start Free Trial</a>
+    <a class="btn btn-s" href="#how" data-i18n="heroCtaSecondary">See How It Works</a>
+   </div>
+   <p class="micro" data-i18n="heroMicro">No credit card required · Free plan available</p>
+  </div>
+  <div class="vis" role="img" aria-label="Product preview: a Markdown editor, the rendered docs site, and a book listing with a Buy button">
+   <div class="bar" aria-hidden="true"><span></span><span></span><span></span></div>
+   <div class="panes" aria-hidden="true">
+    <div class="pane"><pre><span class="k"># Getting started</span>
+
+Install the CLI and
+run your first build.
+
+<span class="k">## Configure</span>
+```bash
+npm i -g tool
+```</pre></div>
+    <div class="pane doc"><b>Getting started</b>Install the CLI and run your first build.<br><span class="chip">Search docs…</span><br><span class="chip">Live · yourdomain.com</span></div>
+   </div>
+   <div class="book" aria-hidden="true"><div class="cover"></div><div><b>The Complete Handbook</b><small>eBook · EPUB + PDF</small></div><span class="buy">Buy $24</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="value"><div class="wrap">
+ <div class="center">
+  <h2 class="h2" data-i18n="valueH2">One source. Two ways to earn from it.</h2>
+  <p class="lead" data-i18n="valueLead">Stop juggling a docs generator, a book formatter, and a marketplace.</p>
+ </div>
+ <div class="grid3">
+  <article class="card"><div class="ic" aria-hidden="true">✎</div><h3 data-i18n="value1H">Markdown to published, without the tooling tax</h3><p data-i18n="value1P">Write in the format you already use. Get a polished docs site and an ebook-ready manuscript from the same source, with no separate build pipelines.</p></article>
+  <article class="card"><div class="ic" aria-hidden="true">⚡</div><h3 data-i18n="value2H">Works offline, installs like an app</h3><p data-i18n="value2P">As a PWA, your editor and your readers' docs keep working on a plane, on a train, or on bad Wi-Fi. Install it on your desktop or phone in one tap.</p></article>
+  <article class="card"><div class="ic" aria-hidden="true">$</div><h3 data-i18n="value3H">Zero marketplace fees on your book sales</h3><p data-i18n="value3P">Sell directly to readers through your own payment gateway. Keep your revenue and your customer relationships instead of feeding a platform's commission.</p></article>
+ </div>
+</div></section>
+
+<section id="how" class="alt"><div class="wrap">
+ <div class="center"><h2 class="h2" data-i18n="howH2">From first draft to first sale in three steps</h2></div>
+ <ol class="steps">
+  <li><h3 data-i18n="how1H">Write in Markdown</h3><p data-i18n="how1P">Draft docs and chapters in a distraction-free editor with live preview, code highlighting, and version history.</p></li>
+  <li><h3 data-i18n="how2H">Launch your docs site</h3><p data-i18n="how2P">Deploy to a fast, searchable documentation site with one click.</p><a href="/app" data-i18n="how2Cta">Launch Your Docs Site</a></li>
+  <li><h3 data-i18n="how3H">Sell your book</h3><p data-i18n="how3P">Turn the same content into an ebook, set your price, and start accepting payments directly.</p><a href="/app" data-i18n="how3Cta">Start Selling Your Book</a></li>
+ </ol>
+</div></section>
+
+<section id="features"><div class="wrap">
+ <div class="center">
+  <h2 class="h2" data-i18n="featH2">Everything you need to publish and sell</h2>
+  <p class="lead" data-i18n="featLead">Fast, reliable tools that keep your docs and your book in sync.</p>
+ </div>
+ <div class="grid6">
+  <article class="card"><h3 data-i18n="feat1H">Lightning-fast pages</h3><p data-i18n="feat1P">Optimized loading and smart caching keep your docs snappy for every reader.</p></article>
+  <article class="card"><h3 data-i18n="feat2H">Data you own</h3><p data-i18n="feat2P">Your content is stored securely, with full export any time.</p></article>
+  <article class="card"><h3 data-i18n="feat3H">Total flexibility</h3><p data-i18n="feat3P">Custom domains, themes, and layouts so your docs and book pages match your brand.</p></article>
+  <article class="card"><h3 data-i18n="feat4H">Polished, accessible design</h3><p data-i18n="feat4P">Clean, consistent pages that read well on any screen and match your brand.</p></article>
+  <article class="card"><h3 data-i18n="feat5H">Installable PWA</h3><p data-i18n="feat5P">Offline reading, background sync, and home-screen install on any device.</p></article>
+  <article class="card"><h3 data-i18n="feat6H">Automation-ready</h3><p data-i18n="feat6P">Publish from your CI/CD or existing tools with a simple API.</p></article>
+ </div>
+</div></section>
+
+<section id="pricing" class="alt"><div class="wrap">
+ <div class="center">
+  <h2 class="h2" data-i18n="priceH2">Start free. Scale when you're ready.</h2>
+  <p class="lead" data-i18n="priceLead">Begin with the free plan. Upgrade when your book starts selling.</p>
+ </div>
+ <div class="price">
+  <article class="tier"><h3 data-i18n="tier1H">Starter</h3><div class="amt" data-i18n="tier1Amt">Free <small data-i18n="forever">forever</small></div>
+   <ul><li data-i18n="tier1L1">1 docs site and 1 book</li><li data-i18n="tier1L2">Offline editor and reader</li><li data-i18n="tier1L3">Community support</li></ul>
+   <a class="btn btn-s" href="/app" data-i18n="tier1Cta">Start Writing for Free</a></article>
+  <article class="tier hl"><h3 data-i18n="tier2H">Pro</h3><div class="amt">$19 <small data-i18n="perMonth">/month</small></div>
+   <ul><li data-i18n="tier2L1">Unlimited docs sites and books</li><li data-i18n="tier2L2">Custom domains</li><li data-i18n="tier2L3">Direct sales with Stripe and PayPal</li><li data-i18n="tier2L4">Priority support</li></ul>
+   <a class="btn btn-p" href="/app" data-i18n="heroCtaPrimary">Start Free Trial</a></article>
+ </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+ <div class="center"><h2 class="h2" data-i18n="faqH2">Questions, answered</h2></div>
+ <div class="faq">
+  <details><summary data-i18n="faq1Q">Who owns my content?</summary><p data-i18n="faq1A">You do. Everything you write and publish belongs to you, and you can export it at any time.</p></details>
+  <details><summary data-i18n="faq2Q">Does it really work offline?</summary><p data-i18n="faq2A">Yes. As a PWA, the editor and your published docs are cached so you can write and read without a connection. Publishing and payments need internet access.</p></details>
+  <details><summary data-i18n="faq3Q">How do I get paid when I sell a book?</summary><p data-i18n="faq3A">Connect your Stripe or PayPal account and readers pay you directly, so revenue goes to you, not a marketplace. Standard payment processor fees still apply.</p></details>
+  <details><summary data-i18n="faq4Q">Can I leave with my content?</summary><p data-i18n="faq4A">Yes. Export your Markdown source, docs site, and book files whenever you like.</p></details>
+  <details><summary data-i18n="faq5Q">Do I need to know how to code?</summary><p data-i18n="faq5A">No. If you can write Markdown, you can publish docs and sell a book.</p></details>
+ </div>
+</div></section>
+
+<section class="cta" id="signup"><div class="wrap">
+ <h2 data-i18n="ctaH2">Your docs and your book deserve one home.</h2>
+ <p data-i18n="ctaP">Join writers and maintainers publishing on their own terms.</p>
+ <div class="ctas"><a class="btn btn-p" href="/app" data-i18n="navCta">Start Writing for Free</a></div>
+ <p style="margin:18px 0 0" data-i18n="ctaFoot">or <a class="l" href="#how" data-i18n-inline="ctaFootLink">see how it works</a></p>
+</div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 Folio</span><nav aria-label="Footer">
+ <a href="#" data-i18n="footProduct">Product</a>
+ <a href="#" data-i18n="footDocs">Docs</a>
+ <a href="#" data-i18n="footTerms">Terms</a>
+ <a href="#" data-i18n="footPrivacy">Privacy</a>
+</nav></div></footer>
+
+<script>
+(function(){
+var STR = {
+ navFeatures:{en:"Features",fr:"Fonctionnalités"},
+ navHow:{en:"How it works",fr:"Comment ça marche"},
+ navPricing:{en:"Pricing",fr:"Tarifs"},
+ navFaq:{en:"FAQ",fr:"FAQ"},
+ navCta:{en:"Start Writing for Free",fr:"Commencer à écrire gratuitement"},
+ heroEyebrow:{en:"Installable PWA · Works offline · Yours to own",fr:"PWA installable · Fonctionne hors ligne · À vous seul"},
+ heroH1:{en:"Write once. Publish your docs and sell your book.",fr:"Écrivez une fois. Publiez vos docs et vendez votre livre."},
+ heroLead:{en:"One Markdown workspace that ships your product documentation as a fast, searchable site and packages the same content as a book you sell directly to readers. No formatting gymnastics, no marketplace taking a cut, and it works offline.",fr:"Un seul espace Markdown qui transforme votre documentation produit en un site rapide et consultable, et le même contenu en un livre que vous vendez directement à vos lecteurs. Sans mise en forme laborieuse, sans commission de marketplace, et ça marche hors ligne."},
+ heroCtaPrimary:{en:"Start Free Trial",fr:"Démarrer l'essai gratuit"},
+ heroCtaSecondary:{en:"See How It Works",fr:"Voir comment ça marche"},
+ heroMicro:{en:"No credit card required · Free plan available",fr:"Aucune carte bancaire requise · Offre gratuite disponible"},
+ valueH2:{en:"One source. Two ways to earn from it.",fr:"Une seule source. Deux façons d'en vivre."},
+ valueLead:{en:"Stop juggling a docs generator, a book formatter, and a marketplace.",fr:"Arrêtez de jongler entre un générateur de docs, un logiciel de mise en page et une marketplace."},
+ value1H:{en:"Markdown to published, without the tooling tax",fr:"Du Markdown à la publication, sans usine à gaz"},
+ value1P:{en:"Write in the format you already use. Get a polished docs site and an ebook-ready manuscript from the same source, with no separate build pipelines.",fr:"Écrivez dans le format que vous utilisez déjà. Obtenez un site de docs soigné et un manuscrit prêt pour l'ebook à partir de la même source, sans chaîne de build séparée."},
+ value2H:{en:"Works offline, installs like an app",fr:"Fonctionne hors ligne, s'installe comme une app"},
+ value2P:{en:"As a PWA, your editor and your readers' docs keep working on a plane, on a train, or on bad Wi-Fi. Install it on your desktop or phone in one tap.",fr:"En tant que PWA, votre éditeur et les docs de vos lecteurs continuent de fonctionner en avion, en train, ou avec un mauvais Wi-Fi. Installez-la sur votre ordinateur ou votre téléphone en un geste."},
+ value3H:{en:"Zero marketplace fees on your book sales",fr:"Zéro commission de marketplace sur vos ventes de livres"},
+ value3P:{en:"Sell directly to readers through your own payment gateway. Keep your revenue and your customer relationships instead of feeding a platform's commission.",fr:"Vendez directement à vos lecteurs via votre propre passerelle de paiement. Gardez vos revenus et votre relation client, au lieu de nourrir la commission d'une plateforme."},
+ howH2:{en:"From first draft to first sale in three steps",fr:"Du premier brouillon à la première vente, en trois étapes"},
+ how1H:{en:"Write in Markdown",fr:"Écrivez en Markdown"},
+ how1P:{en:"Draft docs and chapters in a distraction-free editor with live preview, code highlighting, and version history.",fr:"Rédigez vos docs et vos chapitres dans un éditeur épuré, avec aperçu en direct, coloration du code et historique des versions."},
+ how2H:{en:"Launch your docs site",fr:"Lancez votre site de docs"},
+ how2P:{en:"Deploy to a fast, searchable documentation site with one click.",fr:"Déployez un site de documentation rapide et consultable en un clic."},
+ how2Cta:{en:"Launch Your Docs Site",fr:"Lancer mon site de docs"},
+ how3H:{en:"Sell your book",fr:"Vendez votre livre"},
+ how3P:{en:"Turn the same content into an ebook, set your price, and start accepting payments directly.",fr:"Transformez le même contenu en ebook, fixez votre prix, et commencez à recevoir des paiements directement."},
+ how3Cta:{en:"Start Selling Your Book",fr:"Commencer à vendre mon livre"},
+ featH2:{en:"Everything you need to publish and sell",fr:"Tout ce qu'il faut pour publier et vendre"},
+ featLead:{en:"Fast, reliable tools that keep your docs and your book in sync.",fr:"Des outils rapides et fiables qui gardent vos docs et votre livre synchronisés."},
+ feat1H:{en:"Lightning-fast pages",fr:"Des pages ultra-rapides"},
+ feat1P:{en:"Optimized loading and smart caching keep your docs snappy for every reader.",fr:"Un chargement optimisé et une mise en cache intelligente gardent vos docs réactives pour chaque lecteur."},
+ feat2H:{en:"Data you own",fr:"Des données qui vous appartiennent"},
+ feat2P:{en:"Your content is stored securely, with full export any time.",fr:"Votre contenu est stocké en toute sécurité, avec un export complet à tout moment."},
+ feat3H:{en:"Total flexibility",fr:"Une flexibilité totale"},
+ feat3P:{en:"Custom domains, themes, and layouts so your docs and book pages match your brand.",fr:"Domaines personnalisés, thèmes et mises en page pour que vos docs et vos pages de livre reflètent votre marque."},
+ feat4H:{en:"Polished, accessible design",fr:"Un design soigné et accessible"},
+ feat4P:{en:"Clean, consistent pages that read well on any screen and match your brand.",fr:"Des pages nettes et cohérentes, agréables à lire sur tout écran et fidèles à votre marque."},
+ feat5H:{en:"Installable PWA",fr:"PWA installable"},
+ feat5P:{en:"Offline reading, background sync, and home-screen install on any device.",fr:"Lecture hors ligne, synchronisation en arrière-plan et installation sur l'écran d'accueil, sur tout appareil."},
+ feat6H:{en:"Automation-ready",fr:"Prête pour l'automatisation"},
+ feat6P:{en:"Publish from your CI/CD or existing tools with a simple API.",fr:"Publiez depuis votre CI/CD ou vos outils existants grâce à une API simple."},
+ priceH2:{en:"Start free. Scale when you're ready.",fr:"Commencez gratuitement. Évoluez quand vous êtes prêt."},
+ priceLead:{en:"Begin with the free plan. Upgrade when your book starts selling.",fr:"Commencez avec l'offre gratuite. Passez à l'offre supérieure quand votre livre commence à se vendre."},
+ tier1H:{en:"Starter",fr:"Starter"},
+ tier1Amt:{en:"Free",fr:"Gratuit"},
+ forever:{en:"forever",fr:"à vie"},
+ tier1L1:{en:"1 docs site and 1 book",fr:"1 site de docs et 1 livre"},
+ tier1L2:{en:"Offline editor and reader",fr:"Éditeur et lecture hors ligne"},
+ tier1L3:{en:"Community support",fr:"Support communautaire"},
+ tier1Cta:{en:"Start Writing for Free",fr:"Commencer à écrire gratuitement"},
+ tier2H:{en:"Pro",fr:"Pro"},
+ perMonth:{en:"/month",fr:"/mois"},
+ tier2L1:{en:"Unlimited docs sites and books",fr:"Sites de docs et livres illimités"},
+ tier2L2:{en:"Custom domains",fr:"Domaines personnalisés"},
+ tier2L3:{en:"Direct sales with Stripe and PayPal",fr:"Ventes directes avec Stripe et PayPal"},
+ tier2L4:{en:"Priority support",fr:"Support prioritaire"},
+ faqH2:{en:"Questions, answered",fr:"Vos questions, nos réponses"},
+ faq1Q:{en:"Who owns my content?",fr:"Qui possède mon contenu ?"},
+ faq1A:{en:"You do. Everything you write and publish belongs to you, and you can export it at any time.",fr:"Vous. Tout ce que vous écrivez et publiez vous appartient, et vous pouvez l'exporter à tout moment."},
+ faq2Q:{en:"Does it really work offline?",fr:"Est-ce que ça marche vraiment hors ligne ?"},
+ faq2A:{en:"Yes. As a PWA, the editor and your published docs are cached so you can write and read without a connection. Publishing and payments need internet access.",fr:"Oui. En tant que PWA, l'éditeur et vos docs publiées sont mis en cache, donc vous pouvez écrire et lire sans connexion. La publication et les paiements nécessitent internet."},
+ faq3Q:{en:"How do I get paid when I sell a book?",fr:"Comment suis-je payé quand je vends un livre ?"},
+ faq3A:{en:"Connect your Stripe or PayPal account and readers pay you directly, so revenue goes to you, not a marketplace. Standard payment processor fees still apply.",fr:"Connectez votre compte Stripe ou PayPal et vos lecteurs vous paient directement : les revenus vous reviennent, pas à une marketplace. Les frais standards du prestataire de paiement s'appliquent toujours."},
+ faq4Q:{en:"Can I leave with my content?",fr:"Puis-je repartir avec mon contenu ?"},
+ faq4A:{en:"Yes. Export your Markdown source, docs site, and book files whenever you like.",fr:"Oui. Exportez votre source Markdown, votre site de docs et les fichiers de votre livre quand vous le souhaitez."},
+ faq5Q:{en:"Do I need to know how to code?",fr:"Dois-je savoir coder ?"},
+ faq5A:{en:"No. If you can write Markdown, you can publish docs and sell a book.",fr:"Non. Si vous savez écrire en Markdown, vous pouvez publier des docs et vendre un livre."},
+ ctaH2:{en:"Your docs and your book deserve one home.",fr:"Vos docs et votre livre méritent un seul foyer."},
+ ctaP:{en:"Join writers and maintainers publishing on their own terms.",fr:"Rejoignez les auteurs et mainteneurs qui publient selon leurs propres règles."},
+ ctaFoot:{en:"or ",fr:"ou "},
+ ctaFootLink:{en:"see how it works",fr:"voir comment ça marche"},
+ footProduct:{en:"Product",fr:"Produit"},
+ footDocs:{en:"Docs",fr:"Docs"},
+ footTerms:{en:"Terms",fr:"Conditions"},
+ footPrivacy:{en:"Privacy",fr:"Confidentialité"}
+};
+function apply(lang){
+ document.documentElement.lang = lang;
+ document.querySelectorAll('[data-i18n]').forEach(function(el){
+  var key = el.getAttribute('data-i18n');
+  var entry = STR[key];
+  if(!entry) return;
+  if(key === 'ctaFoot'){
+   el.firstChild.textContent = entry[lang];
+   return;
+  }
+  el.textContent = entry[lang];
+ });
+ document.querySelectorAll('[data-i18n-inline]').forEach(function(el){
+  var key = el.getAttribute('data-i18n-inline');
+  if(STR[key]) el.textContent = STR[key][lang];
+ });
+ document.getElementById('langToggle').textContent = lang === 'en' ? 'FR' : 'EN';
+}
+function currentLang(){
+ var saved = localStorage.getItem('folio_lang');
+ if(saved === 'fr' || saved === 'en') return saved;
+ return (navigator.language || '').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+}
+var lang = currentLang();
+apply(lang);
+document.getElementById('langToggle').addEventListener('click', function(){
+ lang = lang === 'en' ? 'fr' : 'en';
+ localStorage.setItem('folio_lang', lang);
+ apply(lang);
+});
+})();
+</script>
+</body>
+</html>
