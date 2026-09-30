@@ -31,12 +31,14 @@ export default function BuyBook({ slug, priceCents, orderToken, paypalOrderId })
         }).catch(() => {});
       }
       const res = await fetch(`${API}/api/orders/${orderToken}`);
-      if (res.ok) setOrder(await res.json());
+      setOrder(res.ok ? await res.json() : { status: 'not_found' });
     })();
   }, [orderToken, paypalOrderId]);
 
   if (orderToken) {
     if (!order) return null;
+    if (order.status === 'not_found')
+      return <Alert severity="error" sx={{ mt: 3 }}>We couldn&apos;t find this order. If you were charged, contact support with your confirmation email.</Alert>;
     if (order.status !== 'paid')
       return <Alert severity="info" sx={{ mt: 3 }}>Payment is still processing. Refresh this page in a moment.</Alert>;
     return (
@@ -47,6 +49,11 @@ export default function BuyBook({ slug, priceCents, orderToken, paypalOrderId })
             <Button key={f} variant="outlined" href={`${API}/api/orders/${orderToken}/download.${f}`}>Download .{f}</Button>
           ))}
         </Stack>
+        {!order.linkStillLive && (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+            Note: the original page for this book has since been unpublished, but your download above still works — it&apos;s the copy you actually paid for.
+          </Typography>
+        )}
       </Paper>
     );
   }

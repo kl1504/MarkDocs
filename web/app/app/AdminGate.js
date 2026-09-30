@@ -27,10 +27,19 @@ export default function AdminGate({ children }) {
   const submit = async (e) => {
     e.preventDefault();
     setBusy(true);
+    setError('');
     setAdminToken(password);
-    const res = await fetch(`${API}/api/docs`, { headers: { Authorization: `Bearer ${password}` } }).catch(() => null);
+    let res;
+    try {
+      res = await fetch(`${API}/api/docs`, { headers: { Authorization: `Bearer ${password}` } });
+    } catch {
+      setAdminToken(null);
+      setBusy(false);
+      setError(t('couldNotReachApiShort'));
+      return;
+    }
     setBusy(false);
-    if (res?.ok) setOk(true);
+    if (res.ok) setOk(true);
     else { setAdminToken(null); setError(t('incorrectPassword')); }
   };
 
@@ -40,7 +49,9 @@ export default function AdminGate({ children }) {
   return (
     <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center', bgcolor: 'background.default' }}>
       <Container maxWidth="xs">
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}><LangToggle /></Box>
+        <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
+          <LangToggle />
+        </Stack>
         <Paper variant="outlined" sx={{ p: 4, borderRadius: 3 }}>
           <Stack alignItems="center" spacing={1} sx={{ mb: 3 }}>
             <Box sx={{ width: 48, height: 48, borderRadius: 2, bgcolor: 'primary.main', color: '#fff', display: 'grid', placeItems: 'center' }}>

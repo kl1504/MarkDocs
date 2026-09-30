@@ -7,7 +7,7 @@ const epub = epubModule.default || epubModule;
 export const toMarkdown = (doc) => doc.content || '';
 
 export async function toEpub(doc) {
-  return epub({ title: doc.title, author: 'Folio', lang: 'en' }, splitChapters(doc.content, doc.title));
+  return epub({ title: doc.title, author: 'MarkDocs', lang: 'en' }, splitChapters(doc.content, doc.title));
 }
 
 const inline = (t = '') =>

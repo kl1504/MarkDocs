@@ -1,5 +1,5 @@
 // Network-first service worker with cache fallback, so visited pages open offline.
-const CACHE = 'folio-v1';
+const CACHE = 'markdocs-v1';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
 self.addEventListener('fetch', (e) => {

@@ -3,11 +3,13 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 export const STRINGS = {
   en: {
-    appName: 'Folio',
+    appName: 'MarkDocs',
+    backHome: 'Back to site',
     protectedTitle: 'This workspace is password-protected.',
     adminPassword: 'Admin password',
     unlock: 'Unlock',
     incorrectPassword: 'Incorrect password.',
+    couldNotReachApiShort: 'Could not reach the server. Is the API running?',
     newDocument: 'New document',
     noDocuments: 'No documents yet. Create your first one to start writing.',
     emptyState: 'Select a document on the left, or create a new one to start writing.',
@@ -40,14 +42,15 @@ export const STRINGS = {
     restore: 'Restore this version',
     preview: 'Preview',
     viewSite: 'View site',
-    logOut: 'Lock workspace',
   },
   fr: {
-    appName: 'Folio',
+    appName: 'MarkDocs',
+    backHome: "Retour au site",
     protectedTitle: 'Cet espace de travail est protégé par un mot de passe.',
     adminPassword: 'Mot de passe administrateur',
     unlock: 'Déverrouiller',
     incorrectPassword: 'Mot de passe incorrect.',
+    couldNotReachApiShort: "Impossible de joindre le serveur. L'API est-elle lancée ?",
     newDocument: 'Nouveau document',
     noDocuments: 'Aucun document pour le moment. Crée le premier pour commencer à écrire.',
     emptyState: 'Sélectionne un document à gauche, ou crées-en un nouveau pour commencer à écrire.',
@@ -80,7 +83,6 @@ export const STRINGS = {
     restore: 'Restaurer cette version',
     preview: 'Aperçu',
     viewSite: 'Voir le site',
-    logOut: "Verrouiller l'espace",
   },
 };
 
@@ -90,12 +92,12 @@ export function LanguageProvider({ children }) {
   const [lang, setLang] = useState('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('folio_lang');
+    const saved = localStorage.getItem('markdocs_lang');
     if (saved === 'fr' || saved === 'en') setLang(saved);
     else if (navigator.language?.toLowerCase().startsWith('fr')) setLang('fr');
   }, []);
 
-  const set = (l) => { setLang(l); localStorage.setItem('folio_lang', l); };
+  const set = (l) => { setLang(l); localStorage.setItem('markdocs_lang', l); };
   const toggle = () => set(lang === 'en' ? 'fr' : 'en');
   const t = (key, ...args) => {
     const v = STRINGS[lang][key] ?? STRINGS.en[key] ?? key;

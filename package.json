@@ -1,5 +1,5 @@
 {
-  "name": "folio",
+  "name": "markdocs",
   "private": true,
   "workspaces": [
     "server",

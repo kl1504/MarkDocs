@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     depends_on: [mongo]
     environment:
-      MONGODB_URI: mongodb://mongo:27017/folio
+      MONGODB_URI: mongodb://mongo:27017/markdocs
       CLIENT_URL: ${CLIENT_URL}
       ALLOWED_ORIGINS: ${CLIENT_URL}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}

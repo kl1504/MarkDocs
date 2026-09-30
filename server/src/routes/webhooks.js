@@ -12,7 +12,9 @@ export async function stripeWebhook(req, res) {
   }
   if (['checkout.session.completed', 'checkout.session.async_payment_succeeded'].includes(event.type)) {
     const s = event.data.object;
-    if (s.payment_status === 'paid') await Order.updateOne({ token: s.metadata?.orderToken, provider: 'stripe' }, { status: 'paid' });
+    if (s.payment_status === 'paid') {
+      await Order.updateOne({ token: s.metadata?.orderToken, provider: 'stripe' }, { status: 'paid', $unset: { expireAt: 1 } });
+    }
   }
   res.json({ received: true });
 }

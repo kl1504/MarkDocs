@@ -2,7 +2,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Providers from './providers';
 
 export const metadata = {
-  title: 'Folio',
+  title: 'MarkDocs',
   description: 'Write docs and sell books from one Markdown workspace.',
   manifest: '/manifest.json',
 };

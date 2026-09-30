@@ -8,8 +8,8 @@ if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_PASSWORD) {
 
 const port = process.env.PORT || 4000;
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/folio')
-  .then(() => createApp().listen(port, () => console.log(`Folio API listening on :${port}`)))
+  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/markdocs')
+  .then(() => createApp().listen(port, () => console.log(`MarkDocs API listening on :${port}`)))
   .catch((err) => {
     console.error('MongoDB connection failed:', err.message);
     process.exit(1);

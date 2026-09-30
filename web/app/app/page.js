@@ -46,7 +46,13 @@ function Editor() {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const load = async () => setDocs(await api('/docs'));
-  useEffect(() => { load().catch(() => setMsg({ kind: 'error', text: t('couldNotReachApi') })); }, []); // eslint-disable-line
+  useEffect(() => {
+    load().catch((err) => {
+      if (err.message === 'NETWORK_ERROR') return setMsg({ kind: 'error', text: t('couldNotReachApi') });
+      if (err.message === 'UNAUTHORIZED') return window.location.reload(); // password changed/expired: show the lock screen again
+      setMsg({ kind: 'error', text: err.message });
+    });
+  }, []); // eslint-disable-line
 
   const select = async (id) => { setMsg(null); setTab('write'); setDirty(false); setCur(await api(`/docs/${id}`)); };
   const patch = (fields) => { setCur((c) => ({ ...c, ...fields })); setDirty(true); };
@@ -87,8 +93,15 @@ function Editor() {
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar position="sticky" color="transparent" elevation={0} sx={{ borderBottom: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
         <Toolbar sx={{ gap: 1 }}>
-          <Box sx={{ width: 32, height: 32, borderRadius: 1.5, bgcolor: 'primary.main', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: 800, fontFamily: 'monospace', fontSize: 14 }}>M↓</Box>
-          <Typography fontWeight={800} sx={{ flex: 1 }}>{t('appName')}</Typography>
+          <Box
+            component="a" href="/"
+            sx={{ display: 'flex', alignItems: 'center', gap: 1, textDecoration: 'none', color: 'inherit' }}
+            aria-label={t('backHome')}
+          >
+            <Box sx={{ width: 32, height: 32, borderRadius: 1.5, bgcolor: 'primary.main', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: 800, fontFamily: 'monospace', fontSize: 14 }}>M↓</Box>
+            <Typography fontWeight={800}>{t('appName')}</Typography>
+          </Box>
+          <Box sx={{ flex: 1 }} />
           {cur?.published && (
             <Button size="small" href={`/d/${cur.slug}`} target="_blank" startIcon={<ExternalLink size={16} />}>{t('viewSite')}</Button>
           )}

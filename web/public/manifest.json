@@ -1,6 +1,6 @@
 {
-  "name": "Folio",
-  "short_name": "Folio",
+  "name": "MarkDocs",
+  "short_name": "MarkDocs",
   "description": "Write docs and sell books from one Markdown workspace.",
   "start_url": "/app",
   "display": "standalone",
