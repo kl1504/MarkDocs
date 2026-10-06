@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
 
-// Resolves a request that arrives on a reader's own custom domain (set in a
-// document's settings) to that document's public page, so the domain field
-// added in the editor actually serves something instead of sitting unused.
-const API = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+// 1. Utilisez la variable SERVER_URL injectée par le binding de Vercel 
+// (votre middleware s'exécutant désormais sous Node.js, il y aura accès à l'exécution)
+const API = process.env.SERVER_URL || process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 export async function middleware(req) {
   const host = req.headers.get('host')?.split(':')[0]?.toLowerCase();
   const { pathname } = req.nextUrl;
 
-  // Only intercept the site root, on a host that clearly isn't this deployment itself.
+  // Intercepte uniquement la racine du site si ce n'est pas un hôte local ou Vercel standard
   const isLocal = !host || host === 'localhost' || host === '127.0.0.1' || host.endsWith('.vercel.app');
   if (isLocal || pathname !== '/') return NextResponse.next();
 
@@ -19,10 +18,14 @@ export async function middleware(req) {
       const { slug } = await res.json();
       return NextResponse.rewrite(new URL(`/d/${slug}`, req.url));
     }
-  } catch {
-    // API unreachable: fall through to the normal landing page rather than error out.
+  } catch (error) {
+    // API injoignable : redirection vers la page d'atterrissage normale au lieu de planter
   }
   return NextResponse.next();
 }
 
-export const config = { matcher: '/' };
+// 2. CONFIGURATION CRITIQUE : Force l'utilisation du runtime Node.js standard
+export const config = { 
+  runtime: 'nodejs', 
+  matcher: '/' 
+};
