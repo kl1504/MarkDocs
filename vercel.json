@@ -1,5 +1,6 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "$schema": "https://vercel.sh",
+  "skipMiddlewareRequestBody": true,
   "services": {
     "server": {
       "root": "server",
